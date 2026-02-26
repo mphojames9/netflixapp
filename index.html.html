@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nextflix Premium 2026</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter;
+}
+
+body{
+background:#0b0b0b;
+color:white;
+overflow-x:hidden;
+}
+
+/* NAV */
+
+nav{
+position:fixed;
+top:0;
+width:100%;
+height:70px;
+background:linear-gradient(to bottom,#000,transparent);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 40px;
+z-index:999;
+}
+
+.logo{
+font-size:28px;
+font-weight:900;
+color:#e50914;
+}
+
+.searchBox input{
+padding:10px 15px;
+background:#111;
+border:none;
+color:white;
+border-radius:6px;
+width:260px;
+}
+
+/* HERO SLIDER */
+
+.hero{
+
+height:85vh;
+display:flex;
+align-items:flex-end;
+padding:80px 50px;
+
+background-size:cover;
+background-position:center;
+
+transition:1s;
+}
+
+.heroOverlay{
+
+background:linear-gradient(to top,#0b0b0b 10%,transparent);
+
+position:absolute;
+width:100%;
+height:85vh;
+left:0;
+top:0;
+
+}
+
+.heroContent{
+
+position:relative;
+max-width:600px;
+z-index:2;
+animation:fade 1s;
+}
+
+.heroTitle{
+
+font-size:60px;
+font-weight:900;
+margin-bottom:10px;
+}
+
+.heroPlot{
+
+color:#ccc;
+margin-bottom:20px;
+}
+
+.btn{
+
+padding:12px 25px;
+background:#e50914;
+border:none;
+color:white;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+}
+
+/* MOVIES */
+
+.section{
+padding:40px;
+}
+
+.grid{
+
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+gap:20px;
+}
+
+.card{
+
+background:#111;
+border-radius:10px;
+overflow:hidden;
+cursor:pointer;
+
+position:relative;
+
+transition:0.35s cubic-bezier(.2,.8,.2,1);
+
+}
+
+.card:hover{
+
+transform:scale(1.25);
+z-index:10;
+
+box-shadow:0 20px 60px black;
+
+}
+
+
+.expandInfo{
+
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+
+background:linear-gradient(to top,#000,transparent);
+
+padding:15px;
+
+opacity:0;
+transition:.3s;
+
+}
+
+.card:hover .expandInfo{
+
+opacity:1;
+
+}
+
+
+.playBtn{
+
+background:#e50914;
+border:none;
+padding:8px 15px;
+color:white;
+border-radius:6px;
+font-weight:600;
+cursor:pointer;
+margin-bottom:8px;
+
+}
+
+
+.meta{
+
+font-size:13px;
+color:#ccc;
+
+}
+
+.card img{
+width:100%;
+height:260px;
+object-fit:cover;
+}
+
+.cardTitle{
+padding:10px;
+font-size:14px;
+}
+
+/* MODAL */
+
+.modal{
+
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,.95);
+
+display:none;
+align-items:center;
+justify-content:center;
+
+}
+
+
+.hoverPlayer{
+
+position:absolute;
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+display:none;
+
+}
+
+.card{
+position:relative;
+overflow:hidden;
+}
+
+.hoverPlayer iframe{
+
+width:100%;
+height:100%;
+border:none;
+}
+
+.modalContent{
+
+background:#111;
+width:900px;
+max-width:95%;
+display:flex;
+border-radius:10px;
+overflow:hidden;
+}
+
+.modal img{
+width:300px;
+}
+
+.info{
+padding:20px;
+}
+
+.close{
+
+position:absolute;
+top:20px;
+right:30px;
+font-size:30px;
+cursor:pointer;
+
+}
+
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(20px);
+}
+
+to{
+opacity:1;
+transform:translateY(0px);
+}
+
+}
+
+
+.grid:hover .card:not(:hover){
+  filter: blur(3px);
+  transform: scale(0.9);
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<nav>
+
+<div class="logo">
+
+NEXTFLIX
+
+</div>
+
+<div class="searchBox">
+
+<input id="search" placeholder="Search movies...">
+
+</div>
+
+</nav>
+
+
+
+<div id="hero" class="hero">
+
+<div class="heroOverlay"></div>
+
+<div class="heroContent">
+
+<div id="heroTitle" class="heroTitle">
+
+Loading...
+
+</div>
+
+<div id="heroPlot" class="heroPlot">
+
+</div>
+
+<button class="btn" onclick="loadPopular()">
+
+Browse Movies
+
+</button>
+
+</div>
+
+</div>
+
+
+
+<div class="section">
+
+<h2>Trending</h2>
+
+<br>
+
+<div id="movies" class="grid"></div>
+
+</div>
+
+
+
+<div class="modal" id="modal">
+
+<div class="close" onclick="closeModal()">✕</div>
+
+<div class="modalContent">
+
+<img id="poster">
+
+<div class="info">
+
+<h2 id="title"></h2>
+
+<p id="year"></p>
+
+<p id="rating"></p>
+
+<br>
+
+<p id="plot"></p>
+
+<br>
+
+<button class="btn" onclick="playTrailer()">
+▶ Watch Trailer
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div id="trailerModal" class="modal">
+
+<div class="close" onclick="closeTrailer()">✕</div>
+
+<div style="width:95%;max-width:1000px">
+
+<iframe
+id="trailerFrame"
+width="100%"
+height="600"
+frameborder="0"
+allowfullscreen>
+</iframe>
+
+</div>
+
+</div>
+
+<script>
+
+const API="https://www.omdbapi.com/?apikey=a8cac9bd&";
+
+let heroMovies=[];
+let heroIndex=0;
+
+
+/* LOAD HERO MOVIES */
+
+async function loadHero(){
+
+let res=await fetch(API+"s=movie&page=1");
+
+let data=await res.json();
+
+heroMovies=data.Search;
+
+changeHero();
+
+setInterval(changeHero,5000);
+
+}
+
+
+async function changeHero(){
+
+let movie=heroMovies[heroIndex];
+
+let res=await fetch(API+"i="+movie.imdbID);
+
+let m=await res.json();
+
+
+document.getElementById("hero").style.backgroundImage=
+"linear-gradient(to top,#0b0b0b,transparent),url("+m.Poster+")";
+
+
+document.getElementById("heroTitle").innerText=m.Title;
+
+document.getElementById("heroPlot").innerText=m.Plot;
+
+
+heroIndex++;
+
+if(heroIndex>=heroMovies.length)
+heroIndex=0;
+
+}
+
+
+/* GRID */
+
+async function loadPopular(){
+
+let allMovies = [];
+
+for(let page = 1; page <= 5; page++){   // load 5 pages (50 movies)
+
+    let res = await fetch(API + "s=movie&type=movie&page=" + page);
+    let data = await res.json();
+
+    if(data.Search){
+        allMovies = allMovies.concat(data.Search);
+    }
+
+}
+
+showMovies(allMovies);
+
+}
+
+
+function showMovies(movies){
+
+let html="";
+
+movies.forEach(m=>{
+
+if(m.Poster==="N/A") return;
+
+html+=`
+
+<div class="card"
+
+onmouseenter="hoverTrailer('${m.Title}','${m.imdbID}',this)"
+onmouseleave="stopTrailer(this)">
+
+<img src="${m.Poster}">
+
+<div class="hoverPlayer"></div>
+
+<div class="expandInfo">
+
+<button class="playBtn"
+onclick="event.stopPropagation();openMovie('${m.imdbID}')">
+▶ Play
+</button>
+
+<div class="meta">
+${m.Title}
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("movies").innerHTML = html;
+
+}
+
+
+document.getElementById("search")
+
+.addEventListener("input",async e=>{
+
+let q=e.target.value;
+
+if(q.length<3) return;
+
+let res=await fetch(API+"s="+q);
+
+let data=await res.json();
+
+showMovies(data.Search);
+
+})
+
+
+
+/* DETAILS */
+
+function closeModal(){
+
+modal.style.display="none";
+
+}
+
+
+const YT_KEY="AIzaSyAzznNJmZPVU5uVX36c05CH2G8nuRuM3mI";
+
+let currentMovieTitle="";
+
+
+/* OPEN MOVIE */
+
+async function openMovie(id){
+
+let res=await fetch(API+"i="+id);
+let m=await res.json();
+
+currentMovieTitle=m.Title;
+
+poster.src=m.Poster;
+title.innerText=m.Title;
+year.innerText=m.Year+" • "+m.Genre;
+rating.innerText="⭐ "+m.imdbRating;
+plot.innerText=m.Plot;
+
+modal.style.display="flex";
+
+}
+
+
+async function hoverTrailer(title,id,card){
+
+let player=card.querySelector(".hoverPlayer");
+
+player.style.display="block";
+
+
+let res=await fetch(API+"i="+id);
+
+let movie=await res.json();
+
+
+card.querySelector(".meta").innerHTML=
+movie.Title+" • "+movie.Year+" ⭐ "+movie.imdbRating;
+
+
+
+let search=title+" official trailer";
+
+
+let res2=await fetch(
+`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${search}&key=${YT_KEY}`
+);
+
+let data=await res2.json();
+
+let video=data.items[0].id.videoId;
+
+player.innerHTML=
+
+`<iframe src="https://www.youtube.com/embed/${video}?autoplay=1&mute=1&controls=0"></iframe>`;
+
+}
+
+
+
+function stopTrailer(card){
+
+let player=card.querySelector(".hoverPlayer");
+
+player.innerHTML="";
+
+player.style.display="none";
+
+}
+
+
+/* PLAY TRAILER */
+
+async function playTrailer(){
+
+let search=currentMovieTitle+" official trailer";
+
+let url=`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${search}&key=${YT_KEY}`;
+
+let res=await fetch(url);
+
+let data=await res.json();
+
+let videoId=data.items[0].id.videoId;
+
+document.getElementById("trailerFrame").src=
+`https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+document.getElementById("trailerModal").style.display="flex";
+
+}
+
+
+
+/* CLOSE TRAILER */
+
+function closeTrailer(){
+
+trailerModal.style.display="none";
+
+trailerFrame.src="";
+
+}
+
+
+
+/* START */
+
+loadHero();
+loadPopular();
+
+
+</script>
+
+</body>
+</html>
