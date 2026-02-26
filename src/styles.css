@@ -1,0 +1,121 @@
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
+body{background:#0b0b0b;color:white;overflow-x:hidden}
+
+/* NAVBAR */
+nav{
+position:fixed;top:0;width:100%;height:70px;
+display:flex;align-items:center;justify-content:space-between;
+padding:0 40px;z-index:999;transition:.4s;
+background:linear-gradient(to bottom,#000,transparent);
+}
+nav.scrolled{background:#000}
+.logo{font-size:28px;font-weight:900;color:#e50914}
+.searchBox input{
+padding:10px 15px;background:#111;border:none;color:white;
+border-radius:6px;width:260px;
+}
+
+/* HERO */
+.hero{
+height:85vh;display:flex;align-items:flex-end;
+padding:80px 50px;background-size:cover;
+background-position:center;transition:1s;
+position:relative;
+}
+.heroOverlay{
+position:absolute;top:0;left:0;width:100%;height:100%;
+background:linear-gradient(to top,#0b0b0b 10%,transparent);
+}
+.heroContent{position:relative;max-width:600px;z-index:2}
+.heroTitle{font-size:60px;font-weight:900;margin-bottom:10px}
+.heroPlot{color:#ccc;margin-bottom:20px}
+.btn{
+padding:12px 25px;background:#e50914;border:none;
+color:white;border-radius:6px;cursor:pointer;font-weight:600
+}
+
+/* SECTIONS */
+.section{padding:40px}
+.rowTitle{margin-bottom:20px}
+
+/* SLIDER */
+.slider{position:relative}
+.sliderTrack{
+display:flex;gap:15px;overflow-x:auto;
+scroll-behavior:smooth;padding-bottom:10px;
+}
+.sliderTrack::-webkit-scrollbar{display:none}
+
+.arrow{
+position:absolute;top:40%;background:rgba(0,0,0,.7);
+border:none;color:white;font-size:30px;
+width:50px;height:80px;cursor:pointer;z-index:5;
+}
+.arrow.left{left:0}
+.arrow.right{right:0}
+
+/* CARD */
+.card{
+min-width:180px;background:#111;border-radius:10px;
+overflow:hidden;cursor:pointer;position:relative;
+transition:.4s;
+}
+.card:hover{
+transform:scale(1.2);z-index:10;
+box-shadow:0 20px 60px black;
+}
+.card img{
+width:100%;height:260px;object-fit:cover;
+}
+
+.expandInfo{
+position:absolute;bottom:0;width:100%;
+background:linear-gradient(to top,#000,transparent);
+padding:15px;opacity:0;transition:.3s;
+}
+.card:hover .expandInfo{opacity:1}
+
+.meta{font-size:13px;color:#ccc}
+.playBtn{
+background:#e50914;border:none;padding:8px 15px;
+color:white;border-radius:6px;font-weight:600;
+cursor:pointer;margin-bottom:8px;
+}
+
+.hoverPlayer{
+position:absolute;top:0;left:0;width:100%;height:100%;
+display:none;
+}
+.hoverPlayer iframe{
+width:100%;height:100%;border:none;
+}
+
+/* BLUR EFFECT */
+.sliderTrack:hover .card:not(:hover){
+filter:blur(3px);transform:scale(.9);
+}
+
+/* MODAL */
+.modal{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.95);
+display:none;align-items:center;justify-content:center;
+z-index:1000;
+}
+.modalContent{
+background:#111;width:900px;max-width:95%;
+display:flex;border-radius:10px;overflow:hidden;
+}
+.modal img{width:300px}
+.info{padding:20px}
+.close{
+position:absolute;top:20px;right:30px;
+font-size:30px;cursor:pointer;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+.heroTitle{font-size:32px}
+.modalContent{flex-direction:column}
+.card:hover{transform:scale(1.05)}
+}

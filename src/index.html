@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nextflix Premium 2026 Ultra</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./loginForm.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav id="navbar">
+        <div class="logo">NEXTFLIX</div>
+        <div class="right">
+            <button id="openAuthBtn" class="login-nav-btn">Login</button>
+            <div class="searchBox">
+                <input id="search" placeholder="Search movies...">
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= AUTH CONTAINER ================= -->
+   <!-- ================= AUTH MODAL ================= -->
+<div class="auth-wrapper" id="authModal">
+
+  <div class="auth-card">
+    
+    <button class="close-auth" id="closeAuth">&times;</button>
+
+    <h2 id="formTitle">Welcome Back</h2>
+
+    <!-- LOGIN FORM (DEFAULT VISIBLE) -->
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email Address" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button type="submit" class="auth-btn">Login</button>
+      <p class="switch-text">
+        Don’t have an account?
+        <span id="showRegister">Register</span>
+      </p>
+    </form>
+
+    <!-- REGISTER FORM (HIDDEN FIRST) -->
+    <form id="registerForm" style="display:none;">
+      <input type="text" id="regName" placeholder="Full Name" required />
+      <input type="email" id="regEmail" placeholder="Email Address" required />
+      <input type="password" id="regPassword" placeholder="Password" required />
+      <button type="submit" class="auth-btn">Create Account</button>
+      <p class="switch-text">
+        Already have an account?
+        <span id="showLogin">Login</span>
+      </p>
+    </form>
+
+    <div id="authMessage"></div>
+
+  </div>
+</div>
+
+    <div id="hero" class="hero">
+        <div class="heroOverlay"></div>
+        <div class="heroContent">
+            <div id="heroTitle" class="heroTitle">Loading...</div>
+            <div id="heroPlot" class="heroPlot"></div>
+            <button class="btn" onclick="scrollToContent()">Browse Movies</button>
+        </div>
+    </div>
+
+    <div id="content"></div>
+
+    <!-- DETAILS MODAL -->
+    <div class="modal" id="modal">
+        <div class="close" onclick="closeModal()">✕</div>
+        <div class="modalContent">
+            <img id="poster">
+            <div class="info">
+                <h2 id="title"></h2>
+                <p id="year"></p>
+                <p id="rating"></p><br>
+                <p id="plot"></p><br>
+                <button class="btn" onclick="playTrailer()">▶ Watch Trailer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRAILER MODAL -->
+    <div class="modal" id="trailerModal">
+        <div class="close" onclick="closeTrailer()">✕</div>
+        <div style="width:95%;max-width:1000px">
+            <iframe id="trailerFrame" width="100%" height="600" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script src="../script/app.js"></script>
+    <script src="../script/login.js"></script>
+
+</body>
+
+</html>
