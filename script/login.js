@@ -116,3 +116,45 @@ authMessage.style.color="red";
 authMessage.innerHTML="Server error";
 }
 });
+
+const userArea = document.getElementById("userArea");
+
+function updateHeaderUI(){
+
+const token = localStorage.getItem("token");
+const user = JSON.parse(localStorage.getItem("user"));
+
+if(token && user){
+
+  userArea.innerHTML = `
+    <div class="user-menu">
+      <span class="user-name">👤 ${user.name}</span>
+      <button id="logoutBtn" class="logout-btn">Logout</button>
+    </div>
+  `;
+
+  document.getElementById("logoutBtn").onclick = logout;
+
+}else{
+
+  userArea.innerHTML = `
+    <button id="openAuthBtn" class="login-nav-btn">Login</button>
+  `;
+
+  document.getElementById("openAuthBtn").onclick = ()=>{
+    authModal.style.display="flex";
+  };
+}
+
+}
+
+/* ================= LOGOUT ================= */
+
+function logout(){
+localStorage.removeItem("token");
+localStorage.removeItem("user");
+updateHeaderUI();
+}
+
+/* Run on page load */
+updateHeaderUI();

@@ -14,6 +14,7 @@
 
     <nav id="navbar">
         <div class="logo">NEXTFLIX</div>
+        <button id="openMyList" class="myListBtn">My List</button>
         <div class="right">
             <div id="userArea">
                 <button id="openAuthBtn" class="login-nav-btn">Login</button>
@@ -83,6 +84,7 @@
                 <p id="rating"></p><br>
                 <p id="plot"></p><br>
                 <button class="btn" onclick="playTrailer()">▶ Watch Trailer</button>
+                <button onclick="savePlaylist()">➕ Add to Playlist</button>
             </div>
         </div>
     </div>
@@ -94,6 +96,16 @@
             <iframe id="trailerFrame" width="100%" height="600" allowfullscreen></iframe>
         </div>
     </div>
+
+    <!-- OVERLAY -->
+<div id="playlistOverlay" class="playlistOverlay">
+  <div class="playlistHeader">
+    <h2>My List</h2>
+    <button id="closePlaylist">✕</button>
+  </div>
+
+  <div id="playlistGrid" class="playlistGrid"></div>
+</div>
 
     <script src="../script/app.js"></script>
     <script src="../script/login.js"></script>

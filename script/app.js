@@ -7,6 +7,8 @@ const YT_KEY="AIzaSyAzznNJmZPVU5uVX36c05CH2G8nuRuM3mI";
 
 const movieCache = {};
 const trailerCache = {};
+let currentMovieId = "";
+let currentMoviePoster = "";
 
 /* Load saved trailer cache from localStorage */
 const savedTrailerCache = localStorage.getItem("trailerCache");
@@ -97,20 +99,20 @@ async function openMovie(id){
 
 let m;
 
-/* 1️⃣ Check memory cache first */
 if(movieCache[id]){
   m = movieCache[id];
-}
-
-/* 2️⃣ Otherwise fetch and cache */
-else{
+}else{
   let res = await fetch(API+"i="+id);
   m = await res.json();
   movieCache[id] = m;
 }
 
+/* ✅ STORE MOVIE DATA GLOBALLY */
+currentMovieId = id;
 currentMovieTitle = m.Title;
+currentMoviePoster = m.Poster;
 
+/* UI */
 poster.src = m.Poster;
 title.innerText = m.Title;
 year.innerText = m.Year+" • "+m.Genre;
@@ -118,9 +120,6 @@ rating.innerText = "⭐ "+m.imdbRating;
 plot.innerText = m.Plot;
 
 modal.style.display="flex";
-
-/* Continue Watching */
-localStorage.setItem("lastMovie",JSON.stringify(m));
 }
 
 function closeModal(){modal.style.display="none"}
@@ -236,3 +235,87 @@ loadCategory("Trending Now","movie");
 loadCategory("Action","action");
 loadCategory("Comedy","comedy");
 loadCategory("Sci-Fi","sci-fi");
+
+async function savePlaylist() {
+
+  try {
+
+    const res = await fetch("http://localhost:5000/api/playlists", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userId: "user123", // replace later with real user
+        name: "My Playlist",
+        movies: [
+          {
+            imdbID: currentMovieId,
+            title: currentMovieTitle,
+            poster: currentMoviePoster
+          }
+        ]
+      })
+    });
+
+    const data = await res.json();
+
+    console.log("STATUS:", res.status);
+    console.log("RESPONSE:", data);
+
+  } catch (err) {
+    console.error("FRONTEND ERROR:", err);
+  }
+}
+
+const overlay = document.getElementById("playlistOverlay");
+const grid = document.getElementById("playlistGrid");
+const openBtn = document.getElementById("openMyList");
+const closeBtn = document.getElementById("closePlaylist");
+
+/* Open Overlay */
+openBtn.onclick = async () => {
+  overlay.style.display = "flex";
+  loadPlaylists();
+};
+
+/* Close Overlay */
+closeBtn.onclick = () => {
+  overlay.style.display = "none";
+};
+
+/* ESC close */
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") overlay.style.display = "none";
+});
+
+/* Load Playlists */
+async function loadPlaylists() {
+
+  grid.innerHTML = "Loading...";
+
+  try {
+
+    const res = await fetch("http://localhost:5000/api/playlists/user123");
+    const playlists = await res.json();
+
+    grid.innerHTML = "";
+
+    playlists.forEach(pl => {
+      pl.movies.forEach(movie => {
+
+        grid.innerHTML += `
+          <div class="playlistCard" onclick="openMovie('${movie.imdbID}')">
+            <img src="${movie.poster}">
+            <div class="playlistCardTitle">${movie.title}</div>
+          </div>
+        `;
+
+      });
+    });
+
+  } catch (err) {
+    console.error(err);
+    grid.innerHTML = "Failed to load playlists";
+  }
+}
