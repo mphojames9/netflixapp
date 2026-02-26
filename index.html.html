@@ -179,6 +179,19 @@ font-size:30px;cursor:pointer;
 const API="https://www.omdbapi.com/?apikey=a8cac9bd&";
 const YT_KEY="AIzaSyAzznNJmZPVU5uVX36c05CH2G8nuRuM3mI";
 
+/* =========================
+   CACHE SYSTEM
+========================= */
+
+const movieCache = {};
+const trailerCache = {};
+
+/* Load saved trailer cache from localStorage */
+const savedTrailerCache = localStorage.getItem("trailerCache");
+if(savedTrailerCache){
+  Object.assign(trailerCache, JSON.parse(savedTrailerCache));
+}
+
 let heroMovies=[],heroIndex=0,currentMovieTitle="";
 
 /* NAV SCROLL */
@@ -258,53 +271,112 @@ content.innerHTML="";
 await loadCategory("Search Results",q);
 });
 
-/* MODAL */
 async function openMovie(id){
-let res=await fetch(API+"i="+id);
-let m=await res.json();
-currentMovieTitle=m.Title;
-poster.src=m.Poster;
-title.innerText=m.Title;
-year.innerText=m.Year+" • "+m.Genre;
-rating.innerText="⭐ "+m.imdbRating;
-plot.innerText=m.Plot;
+
+let m;
+
+/* 1️⃣ Check memory cache first */
+if(movieCache[id]){
+  m = movieCache[id];
+}
+
+/* 2️⃣ Otherwise fetch and cache */
+else{
+  let res = await fetch(API+"i="+id);
+  m = await res.json();
+  movieCache[id] = m;
+}
+
+currentMovieTitle = m.Title;
+
+poster.src = m.Poster;
+title.innerText = m.Title;
+year.innerText = m.Year+" • "+m.Genre;
+rating.innerText = "⭐ "+m.imdbRating;
+plot.innerText = m.Plot;
+
 modal.style.display="flex";
+
+/* Continue Watching */
 localStorage.setItem("lastMovie",JSON.stringify(m));
 }
+
 function closeModal(){modal.style.display="none"}
 
-/* TRAILER */
 async function playTrailer(){
-let search=currentMovieTitle+" official trailer";
-let res=await fetch(
-`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${search}&key=${YT_KEY}`
-);
-let data=await res.json();
-let videoId=data.items?.[0]?.id?.videoId;
-if(!videoId) return;
-trailerFrame.src=`https://www.youtube.com/embed/${videoId}?autoplay=1`;
-trailerModal.style.display="flex";
+
+try{
+
+let search = currentMovieTitle+" official trailer";
+
+/* 1️⃣ Check trailer cache */
+let videoId = trailerCache[search];
+
+if(!videoId){
+
+  let res = await fetch(
+  `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${encodeURIComponent(search)}&key=${YT_KEY}`
+  );
+
+  if(!res.ok) throw new Error("YT API error");
+
+  let data = await res.json();
+  videoId = data.items?.[0]?.id?.videoId;
+
+  if(!videoId) return;
+
+  /* 1 Save in memory cache */
+  trailerCache[search] = videoId;
+
+  /* 3 Save in localStorage */
+  localStorage.setItem("trailerCache", JSON.stringify(trailerCache));
 }
+
+/* 4 Play */
+trailerFrame.src =
+`https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+trailerModal.style.display="flex";
+
+}catch(err){
+console.error("Trailer error:",err);
+}
+
+}
+
 function closeTrailer(){
 trailerModal.style.display="none";
 trailerFrame.src="";
 }
 
-/* HOVER TRAILER */
 async function hoverTrailer(title,id,card){
-let player=card.querySelector(".hoverPlayer");
+
+let player = card.querySelector(".hoverPlayer");
 player.style.display="block";
 
-let search=title+" official trailer";
-let res=await fetch(
-`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${search}&key=${YT_KEY}`
-);
-let data=await res.json();
-let video=data.items?.[0]?.id?.videoId;
-if(!video) return;
-player.innerHTML=
-`<iframe src="https://www.youtube.com/embed/${video}?autoplay=1&mute=1&controls=0"></iframe>`;
+let search = title+" official trailer";
+
+let videoId = trailerCache[search];
+
+if(!videoId){
+
+  let res = await fetch(
+  `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${encodeURIComponent(search)}&key=${YT_KEY}`
+  );
+
+  let data = await res.json();
+  videoId = data.items?.[0]?.id?.videoId;
+
+  if(!videoId) return;
+
+  trailerCache[search] = videoId;
+  localStorage.setItem("trailerCache", JSON.stringify(trailerCache));
 }
+
+player.innerHTML =
+`<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0"></iframe>`;
+}
+
 function stopTrailer(card){
 let player=card.querySelector(".hoverPlayer");
 player.innerHTML="";
