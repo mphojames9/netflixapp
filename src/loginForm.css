@@ -18,6 +18,31 @@
   font-family:Arial, sans-serif;
 }
 
+.user-menu{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.user-name{
+  color:white;
+  font-weight:bold;
+}
+
+.logout-btn{
+  padding:6px 14px;
+  border:none;
+  border-radius:20px;
+  background:#444;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.logout-btn:hover{
+  background:#e50914;
+}
+
 .auth-card{
   width:380px;
   padding:40px;

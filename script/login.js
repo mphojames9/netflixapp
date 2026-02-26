@@ -66,6 +66,8 @@ const data = await res.json();
 
 if(res.ok){
 localStorage.setItem("token",data.token);
+localStorage.setItem("user",JSON.stringify(data.user));
+updateHeaderUI();
 authMessage.style.color="lime";
 authMessage.innerHTML=" Registered!";
 setTimeout(()=>authModal.style.display="none",800);
@@ -99,6 +101,8 @@ const data = await res.json();
 
 if(res.ok){
 localStorage.setItem("token",data.token);
+localStorage.setItem("user",JSON.stringify(data.user));
+updateHeaderUI();
 authMessage.style.color="lime";
 authMessage.innerHTML=" Logged In!";
 setTimeout(()=>authModal.style.display="none",800);
