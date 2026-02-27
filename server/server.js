@@ -69,6 +69,12 @@ app.delete("/api/playlists/:playlistId/:imdbID", async (req, res) => {
   }
 });
 
+/* ================================
+   SERVE FRONTEND (IMPORTANT)
+================================ */
+
+
+
 /* Serve frontend */
 app.use(express.static(path.join(__dirname, "../src")));
 
@@ -76,9 +82,10 @@ app.use(express.static(path.join(__dirname, "../src")));
 app.use("/script", express.static(path.join(__dirname, "../script")));
 
 /* SPA fallback */
-app.use((req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../src", "index.html"));
 });
+
 /* ================================
    PORT (RENDER REQUIRES THIS)
 ================================ */
