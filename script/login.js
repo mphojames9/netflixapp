@@ -147,11 +147,9 @@ if(token && user){
     authModal.style.display="flex";
   };
 }
-
 }
 
 /* ================= LOGOUT ================= */
-
 function logout(){
 localStorage.removeItem("token");
 localStorage.removeItem("user");
@@ -160,5 +158,4 @@ applyPlayLockState();
 refreshPlayButtons();
 }
 
-/* Run on page load */
 updateHeaderUI();
