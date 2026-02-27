@@ -105,6 +105,8 @@ localStorage.setItem("user",JSON.stringify(data.user));
 updateHeaderUI();
 authMessage.style.color="lime";
 authMessage.innerHTML=" Logged In!";
+refreshPlayButtons();
+applyPlayLockState();
 setTimeout(()=>authModal.style.display="none",800);
 }else{
 authMessage.style.color="red";
@@ -154,6 +156,8 @@ function logout(){
 localStorage.removeItem("token");
 localStorage.removeItem("user");
 updateHeaderUI();
+applyPlayLockState();
+refreshPlayButtons();
 }
 
 /* Run on page load */
