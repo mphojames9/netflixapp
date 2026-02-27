@@ -15,9 +15,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 
-const authRoutes = require("./server/routes/auth");
-const playlistRoutes = require("./server/routes/playlist");
-const Playlist = require("./server/models/Playlist");
+const authRoutes = require("./routes/auth");
+const playlistRoutes = require("./routes/playlist");
+const Playlist = require("./models/Playlist");
 
 const app = express();
 
