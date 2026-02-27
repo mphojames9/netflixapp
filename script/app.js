@@ -305,11 +305,18 @@ async function loadPlaylists() {
       pl.movies.forEach(movie => {
 
         grid.innerHTML += `
-          <div class="playlistCard" onclick="openMovie('${movie.imdbID}')">
-            <img src="${movie.poster}">
-            <div class="playlistCardTitle">${movie.title}</div>
-          </div>
-        `;
+  <div class="playlistCard">
+    <img src="${movie.poster}" onclick="openMovie('${movie.imdbID}')">
+    
+    <button 
+      class="removeBtn"
+      onclick="removeMovie(event,'${pl._id}','${movie.imdbID}', this)">
+      ✕
+    </button>
+
+    <div class="playlistCardTitle">${movie.title}</div>
+  </div>
+`;
 
       });
     });
@@ -317,5 +324,40 @@ async function loadPlaylists() {
   } catch (err) {
     console.error(err);
     grid.innerHTML = "Failed to load playlists";
+  }
+}
+
+async function removeMovie(e, playlistId, imdbID, btn) {
+
+  e.stopPropagation(); // prevent opening movie
+
+  if (btn.disabled) return;
+  btn.disabled = true;
+
+  try {
+
+    const res = await fetch(
+      `http://localhost:5000/api/playlists/${playlistId}/${imdbID}`,
+      { method: "DELETE" }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+
+    // Smooth UI removal (Netflix style)
+    const card = btn.closest(".playlistCard");
+    card.style.transition = "0.3s ease";
+    card.style.transform = "scale(0.8)";
+    card.style.opacity = "0";
+
+    setTimeout(() => card.remove(), 300);
+
+  } catch (err) {
+    console.error("REMOVE FRONTEND ERROR:", err);
+    btn.disabled = false;
+    alert("Failed to remove movie");
   }
 }

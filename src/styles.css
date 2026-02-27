@@ -214,3 +214,24 @@ font-size:30px;cursor:pointer;
   padding: 10px;
   font-size: 14px;
 }
+
+.removeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.2s ease;
+  z-index: 10;
+}
+
+.removeBtn:hover {
+  background: #e50914;
+  transform: scale(1.1);
+}

@@ -26,3 +26,27 @@ app.listen(5000, ()=>console.log("Server running on port 5000"));
 const playlistRoutes = require("./routes/playlist");
 
 app.use("/api/playlists", playlistRoutes);
+
+
+// REMOVE MOVIE FROM PLAYLIST
+app.delete("/api/playlists/:playlistId/:imdbID", async (req, res) => {
+  try {
+    const { playlistId, imdbID } = req.params;
+
+    const playlist = await Playlist.findByIdAndUpdate(
+      playlistId,
+      { $pull: { movies: { imdbID } } },
+      { new: true }
+    );
+
+    if (!playlist) {
+      return res.status(404).json({ message: "Playlist not found" });
+    }
+
+    res.json({ message: "Movie removed successfully" });
+
+  } catch (err) {
+    console.error("REMOVE ERROR:", err);
+    res.status(500).json({ message: "Server error removing movie" });
+  }
+});
