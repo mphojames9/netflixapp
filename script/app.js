@@ -237,7 +237,6 @@ loadCategory("Comedy","comedy");
 loadCategory("Sci-Fi","sci-fi");
 
 async function savePlaylist() {
-
   try {
 
     const res = await fetch("http://localhost:5000/api/playlists", {
@@ -246,7 +245,7 @@ async function savePlaylist() {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        userId: "user123", // replace later with real user
+        userId: "user123",
         name: "My Playlist",
         movies: [
           {
@@ -263,8 +262,22 @@ async function savePlaylist() {
     console.log("STATUS:", res.status);
     console.log("RESPONSE:", data);
 
+    if (res.ok) {
+      showToast(
+        "Added to Playlist",
+        `${currentMovieTitle} is now in My Playlist 🎬`
+      );
+    } else {
+      showToast(
+        "Failed",
+        data.message || "Could not save movie",
+        "error"
+      );
+    }
+
   } catch (err) {
     console.error("FRONTEND ERROR:", err);
+    showToast("Network Error", "Server not reachable", "error");
   }
 }
 
@@ -360,4 +373,19 @@ async function removeMovie(e, playlistId, imdbID, btn) {
     btn.disabled = false;
     alert("Failed to remove movie");
   }
+}
+
+function showToast(title, message) {
+  const toast = document.getElementById("netflixToast");
+  const toastTitle = document.getElementById("toastTitle");
+  const toastMessage = document.getElementById("toastMessage");
+
+  toastTitle.textContent = title;
+  toastMessage.textContent = message;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
 }
