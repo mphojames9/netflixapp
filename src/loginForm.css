@@ -124,11 +124,8 @@
 }
 
 .login-nav-btn{
-  padding:8px 18px;
-  border:none;
-  border-radius:20px;
   background:#e50914;
   color:white;
-  font-weight:bold;
-  cursor:pointer;
+  padding: 12px 26px;
+
 }

@@ -41,7 +41,19 @@ async function changeHero() {
   let res = await fetch(API + "i=" + movie.imdbID);
   let m = await res.json();
   hero.style.backgroundImage =
-    "linear-gradient(to top,#0b0b0b,transparent),url(" + m.Poster + ")";
+`linear-gradient(to top,#0b0b0b,transparent),
+ url(${m.Poster})`;
+
+const highRes = `https://img.omdbapi.com/?apikey=a8cac9bd&i=${m.imdbID}&h=800`;
+
+const img = new Image();
+img.src = highRes;
+
+img.onload = () => {
+  hero.style.backgroundImage =
+  `linear-gradient(to top,#0b0b0b,transparent),
+   url(${highRes})`;
+};
   heroTitle.innerText = m.Title;
   heroPlot.innerText = m.Plot;
   heroIndex = (heroIndex + 1) % heroMovies.length;
@@ -441,6 +453,8 @@ function refreshPlayButtons() {
   });
 
 }
+
+
 
 applyPlayLockState();
 refreshPlayButtons();

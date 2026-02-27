@@ -8,22 +8,36 @@
     <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="./loginForm.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
 
     <nav id="navbar">
-        <div class="logo">NEXTFLIX</div>
-        <button id="openMyList" class="myListBtn">My List</button>
-        <div class="right">
-            <div id="userArea">
-                <button id="openAuthBtn" class="login-nav-btn">Login</button>
-            </div>
-            <div class="searchBox">
-                <input id="search" placeholder="Search movies...">
-            </div>
+    <div class="logo">NEXTFLIX</div>
+
+    <!-- Mobile Toggle -->
+    <button id="navToggle" class="navToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="nav-right" id="navMenu">
+        <div id="userArea">
+            <button id="openAuthBtn" class="login-nav-btn">Login</button>
         </div>
-    </nav>
+
+        <button id="openMyList" class="myListBtn">
+            <i class="fa-solid fa-bookmark"></i>
+            <span>My List</span>
+        </button>
+
+        <div class="searchBox">
+            <input id="search" placeholder="Search movies...">
+        </div>
+    </div>
+</nav>
 
     <!-- ================= AUTH MODAL ================= -->
     <div class="auth-wrapper" id="authModal">
@@ -98,23 +112,23 @@
     </div>
 
     <!-- OVERLAY -->
-<div id="playlistOverlay" class="playlistOverlay">
-  <div class="playlistHeader">
-    <h2>My List</h2>
-    <button id="closePlaylist">✕</button>
-  </div>
+    <div id="playlistOverlay" class="playlistOverlay">
+        <div class="playlistHeader">
+            <h2>My List</h2>
+            <button id="closePlaylist">✕</button>
+        </div>
 
-  <div id="playlistGrid" class="playlistGrid"></div>
-</div>
+        <div id="playlistGrid" class="playlistGrid"></div>
+    </div>
 
-<!-- NETFLIX PREMIUM TOAST -->
-<div id="netflixToast" class="toast">
-  <div class="toast-icon">✓</div>
-  <div class="toast-content">
-    <h4 id="toastTitle">Added to Playlist</h4>
-    <p id="toastMessage">Movie saved successfully</p>
-  </div>
-</div>
+    <!-- NETFLIX PREMIUM TOAST -->
+    <div id="netflixToast" class="toast">
+        <div class="toast-icon">✓</div>
+        <div class="toast-content">
+            <h4 id="toastTitle">Added to Playlist</h4>
+            <p id="toastMessage">Movie saved successfully</p>
+        </div>
+    </div>
 
     <script src="../script/app.js"></script>
     <script src="../script/login.js"></script>

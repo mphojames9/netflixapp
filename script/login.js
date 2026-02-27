@@ -159,3 +159,23 @@ refreshPlayButtons();
 }
 
 updateHeaderUI();
+document.addEventListener("DOMContentLoaded", () => {
+
+  const navToggle = document.getElementById("navToggle");
+  const navMenu = document.getElementById("navMenu");
+
+  if (!navToggle || !navMenu) return;
+
+  navToggle.addEventListener("click", () => {
+    navToggle.classList.toggle("active");
+    navMenu.classList.toggle("active");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
+      navToggle.classList.remove("active");
+      navMenu.classList.remove("active");
+    }
+  });
+
+});
