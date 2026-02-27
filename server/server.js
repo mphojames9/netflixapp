@@ -82,10 +82,9 @@ app.use(express.static(path.join(__dirname, "../src")));
 app.use("/script", express.static(path.join(__dirname, "../script")));
 
 /* SPA fallback */
-app.get("/*", (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../src", "index.html"));
 });
-
 /* ================================
    PORT (RENDER REQUIRES THIS)
 ================================ */
