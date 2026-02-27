@@ -23,7 +23,8 @@ background-position:center;transition:1s;
 position:relative;
 }
 .heroOverlay{
-position:absolute;top:0;left:0;width:100%;height:100%;
+position:absolute;top:0;left:0;width:100%;
+height:calc(100% + 5px);
 background:linear-gradient(to top,#0b0b0b 10%,transparent);
 }
 .heroContent{position:relative;max-width:600px;z-index:2}
@@ -54,9 +55,6 @@ width:50px;height:80px;cursor:pointer;z-index:5;
 .arrow.left{left:0}
 .arrow.right{right:0}
 
-/* =========================
-   CARD – 2026 RESPONSIVE
-========================= */
 
 .card {
   flex: 0 0 auto;
@@ -70,7 +68,7 @@ width:50px;height:80px;cursor:pointer;z-index:5;
 }
 
 .card:hover {
-  transform: scale(1.15);
+  transform: scale(1.05);
   z-index: 10;
   box-shadow: 0 20px 60px rgba(0,0,0,0.8);
 }
@@ -113,32 +111,224 @@ width:100%;height:100%;border:none;
 
 /* BLUR EFFECT */
 .sliderTrack:hover .card:not(:hover){
-filter:blur(3px);transform:scale(.9);
+filter:blur(1px);transform:scale(.9);
 }
 
-/* MODAL */
-.modal{
-position:fixed;top:0;left:0;width:100%;height:100%;
-background:rgba(0,0,0,.95);
-display:none;align-items:center;justify-content:center;
-z-index:1000;
-}
-.modalContent{
-background:#111;width:900px;max-width:95%;
-display:flex;border-radius:10px;overflow:hidden;
-}
-.modal img{width:300px}
-.info{padding:20px}
-.close{
-position:absolute;top:20px;right:30px;
-font-size:30px;cursor:pointer;
-}
+
 
 /* MOBILE */
 @media(max-width:768px){
 .heroTitle{font-size:32px}
-.modalContent{flex-direction:column}
-.card:hover{transform:scale(1.05)}
+.card:hover{transform:scale(1.02)}
+}
+
+/* ==============================
+   NETFLIX 2026 PREMIUM MODAL
+============================== */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(20px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 40px;
+  animation: fadeInModal 0.4s ease;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  background: linear-gradient(145deg, #111, #0c0c0c);
+  width: 1000px;
+  max-width: 100%;
+  display: flex;
+  gap: 40px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.9),
+    0 0 0 1px rgba(255,255,255,0.05);
+  padding: 40px;
+  position: relative;
+}
+
+/* Poster */
+.modalContent img {
+  width: 320px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+}
+
+/* Info Section */
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.info h2 {
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+#year {
+  color: #aaa;
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+#rating {
+  color: #46d369;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+#plot {
+  color: #ccc;
+  line-height: 1.6;
+  font-size: 15px;
+  margin-bottom: 25px;
+}
+
+/* Buttons container */
+.info button {
+  margin-right: 15px;
+  margin-bottom: 10px;
+}
+
+/* Primary Button */
+.btn {
+  padding: 14px 28px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(.77,0,.18,1);
+  font-size: 14px;
+}
+
+/* Watch Button */
+.btn:not(.secondary) {
+  background: linear-gradient(135deg, #e50914, #ff2e2e);
+  box-shadow: 0 8px 30px rgba(229,9,20,0.5);
+}
+
+.btn:not(.secondary):hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(229,9,20,0.7);
+}
+
+/* Save Button */
+.btn.secondary {
+  background: rgba(255,255,255,0.08);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+}
+
+.btn.secondary:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-3px);
+}
+
+/* Close Button */
+.close {
+  position: absolute;
+  top: 25px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  right: 30px;
+  font-size: 28px;
+  cursor: pointer;
+  color: #aaa;
+  transition: 0.3s ease;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.507);
+  padding: 3px;
+  border-radius: 50%;
+}
+
+.close:hover {
+  color: white;
+  transform: rotate(90deg);
+}
+
+/* ==============================
+   RESPONSIVE DESIGN
+============================== */
+
+@media (max-width: 900px) {
+
+  .modalContent {
+    flex-direction: column;
+    padding: 25px;
+    gap: 25px;
+  }
+
+  .modalContent img {
+    width: 100%;
+    max-height: 450px;
+  }
+
+  .info h2 {
+    font-size: 28px;
+  }
+
+}
+
+@media (max-width: 500px) {
+
+  .modal {
+    padding: 15px;
+  }
+
+  .modalContent {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .info h2 {
+    font-size: 22px;
+  }
+
+  #plot {
+    font-size: 13px;
+  }
+
+  .btn {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+@media (max-height:850px){
+  /* Poster */
+.modalContent img {
+  width: 100%;
+  height: 250px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+}
+}
+
+@media (max-height:850px){
+  /* Poster */
+.modalContent img {
+  width: 100%;
+  height: 180px;
+}
 }
 
 .myListBtn, .login-nav-btn {
@@ -421,6 +611,10 @@ font-size:30px;cursor:pointer;
 
 @media (max-width: 900px) {
 
+  .hero {
+    height: 60vh;
+  }
+
   .card {
     width: 150px;
   }
@@ -430,7 +624,7 @@ font-size:30px;cursor:pointer;
   }
 
   .card:hover {
-    transform: scale(1.08); /* smaller zoom */
+    transform: scale(1.02); /* smaller zoom */
   }
 
   .section {
@@ -444,6 +638,10 @@ font-size:30px;cursor:pointer;
 }
 
 @media (max-width: 600px) {
+
+    .hero {
+    padding: 40px 25px;
+  }
 
   .card {
     width: 120px;
@@ -464,5 +662,78 @@ font-size:30px;cursor:pointer;
     padding: 8px;
     font-size: 12px;
   }
+}
 
+.slider {
+  position: relative;
+}
+
+/* Fade edge effect (Netflix style) */
+.slider::before,
+.slider::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 120px;
+  height: 100%;
+  z-index: 4;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.slider::before {
+  left: 0;
+  background: linear-gradient(to right, #00000073 0%, transparent 100%);
+}
+
+.slider::after {
+  right: -2px;
+  background: linear-gradient(to left, #000 0%, transparent 100%);
+}
+
+/* Arrow Base */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 55px;
+  height: 110px;
+  border: none;
+  background: rgba(20,20,20,0.6);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 6;
+  border-radius: 12px;
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(.77,0,.18,1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Position */
+.arrow.left { left: 10px; }
+.arrow.right { right: 10px; }
+
+/* Show on hover */
+.slider:hover .arrow {
+  opacity: 1;
+}
+
+/* Hover Animation */
+.arrow:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* Icon animation */
+.arrow i {
+  transition: transform 0.3s ease;
+}
+
+.arrow:hover i {
+  transform: scale(1.2);
 }

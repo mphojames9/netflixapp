@@ -73,7 +73,9 @@ async function loadCategory(title, keyword) {
 <div class="sliderTrack">
 ${data.Search.map(m => cardHTML(m)).join("")}
 </div>
-<button class="arrow right" onclick="scrollRow(this,1)">❯</button>
+<button class="arrow right" onclick="scrollRow(this,1)">
+  <i class="fa-solid fa-chevron-right"></i>
+</button>
 </div>
 </div>`;
 }
@@ -241,7 +243,7 @@ function loadContinue() {
   let m = JSON.parse(localStorage.getItem("lastMovie"));
   if (!m) return;
   content.innerHTML += `
-<div class="section">
+<div class="section" id='cw'>
 <h2>Continue Watching</h2>
 <div class="sliderTrack">${cardHTML(m)}</div>
 </div>`;
@@ -272,7 +274,7 @@ async function savePlaylist() {
 
   try {
     const user = JSON.parse(localStorage.getItem("user"));
-    const res = await fetch("http://localhost:5000/api/playlists", {
+    const res = await fetch("/api/playlists", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -344,7 +346,7 @@ async function loadPlaylists() {
 
   try {
     const user = JSON.parse(localStorage.getItem("user"));
-    const res = await fetch(`http://localhost:5000/api/playlists/${user.id}`);
+    const res = await fetch(`/api/playlists/${user.id}`);
     const playlists = await res.json();
 
     grid.innerHTML = "";
@@ -385,7 +387,7 @@ async function removeMovie(e, playlistId, imdbID, btn) {
   try {
 
     const res = await fetch(
-      `http://localhost:5000/api/playlists/${playlistId}/${imdbID}`,
+      `/api/playlists/${playlistId}/${imdbID}`,
       { method: "DELETE" }
     );
 
@@ -428,14 +430,28 @@ function showToast(title, message) {
 function handlePlayClick(id) {
 
   if (!isLoggedIn()) {
-
     showToast("Login Required", "Please login to play this movie 🎬");
-
-    // Optional: open login modal here
-    // showLoginModal();
-
     return;
   }
+
+  // Get existing continue list
+  let continueList = JSON.parse(localStorage.getItem("continueWatching")) || [];
+
+  // Remove if already exists (avoid duplicates)
+  continueList = continueList.filter(m => m.imdbID !== id);
+
+  // Add current movie to beginning
+  continueList.unshift({
+    imdbID: currentMovieId,
+    title: currentMovieTitle,
+    poster: currentMoviePoster
+  });
+
+  // Keep only last 3
+  continueList = continueList.slice(0, 3);
+
+  // Save back
+  localStorage.setItem("continueWatching", JSON.stringify(continueList));
 
   openMovie(id);
 }
@@ -446,15 +462,16 @@ function refreshPlayButtons() {
 
     if (isLoggedIn()) {
       btn.textContent = "▶ Play";
+      document.querySelector('#cw').style.display = 'block';
+      document.querySelector('.myListBtn').style.display = 'block';
     } else {
       btn.textContent = "Login to Play";
+      document.querySelector('#cw').style.display = 'none';
+      document.querySelector('.myListBtn').style.display = 'none';
     }
 
   });
 
 }
-
-
-
 applyPlayLockState();
 refreshPlayButtons();
