@@ -69,21 +69,16 @@ app.delete("/api/playlists/:playlistId/:imdbID", async (req, res) => {
   }
 });
 
-/* ================================
-   SERVE FRONTEND (IMPORTANT)
-================================ */
+/* Serve frontend */
+app.use(express.static(path.join(__dirname, "../src")));
 
-// Serve static files from src
-app.use(express.static(path.join(__dirname, "src")));
-
-// Serve JS folder
-app.use("/script", express.static(path.join(__dirname, "script")));
+/* Serve JS folder */
+app.use("/script", express.static(path.join(__dirname, "../script")));
 
 /* SPA fallback */
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "src", "index.html"));
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "../src", "index.html"));
 });
-
 /* ================================
    PORT (RENDER REQUIRES THIS)
 ================================ */
