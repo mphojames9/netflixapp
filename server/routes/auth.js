@@ -40,7 +40,8 @@ const token = jwt.sign(
 res.json({token,user:{id:user._id,name:user.name,email:user.email}});
 
 }catch(err){
-res.status(500).json({error:"Server error"});
+console.error("AUTH ERROR:", err);
+res.status(500).json({msg:"Server error"});
 }
 });
 
