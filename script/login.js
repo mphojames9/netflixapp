@@ -97,27 +97,40 @@ headers:{"Content-Type":"application/json"},
 body:JSON.stringify({email,password})
 });
 
-const data = await res.json();
+let data;
 
-if(res.ok){
+try {
+  data = await res.json();
+} catch {
+  throw new Error("Invalid JSON response");
+}
+
+if(res.ok && data.token){
+
 localStorage.setItem("token",data.token);
 localStorage.setItem("user",JSON.stringify(data.user));
+
 updateHeaderUI();
 authMessage.style.color="lime";
 authMessage.innerHTML=" Logged In!";
+
 refreshPlayButtons();
 applyPlayLockState();
+
 setTimeout(()=>authModal.style.display="none",800);
+
 }else{
 authMessage.style.color="red";
 authMessage.innerHTML=data.msg || "Login failed";
 }
 
-}catch{
+}catch(err){
+console.error("LOGIN ERROR:", err);
 authMessage.style.color="red";
 authMessage.innerHTML="Server error";
 }
 });
+
 
 const userArea = document.getElementById("userArea");
 

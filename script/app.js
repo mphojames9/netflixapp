@@ -1,9 +1,9 @@
-const API = "https://www.omdbapi.com/?apikey=a8cac9bd&";
+const API = "https://www.omdbapi.com/?apikey=cceff7cb&";
 const YT_KEY = "AIzaSyAzznNJmZPVU5uVX36c05CH2G8nuRuM3mI";
 
 
 /* =========================
-   CACHE SYSTEM
+   CACHE SYSTEM 
 ========================= */
 
 const movieCache = {};
@@ -45,7 +45,7 @@ async function changeHero() {
 `linear-gradient(to top,#0b0b0b,transparent),
  url(${m.Poster})`;
 
-const highRes = `https://img.omdbapi.com/?apikey=a8cac9bd&i=${m.imdbID}&h=800`;
+const highRes = `https://img.omdbapi.com/?apikey=cceff7cb&i=${m.imdbID}&h=800`;
 
 const img = new Image();
 img.src = highRes;
