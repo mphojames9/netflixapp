@@ -1,6 +1,7 @@
 const API = "https://www.omdbapi.com/?apikey=a8cac9bd&";
 const YT_KEY = "AIzaSyAzznNJmZPVU5uVX36c05CH2G8nuRuM3mI";
 
+
 /* =========================
    CACHE SYSTEM
 ========================= */
@@ -249,6 +250,9 @@ function loadContinue() {
 </div>`;
 }
 
+  const cw = document.querySelector('#cw');
+  const myListBtn = document.querySelector('.myListBtn');
+
 /* HERO BUTTON */
 function scrollToContent() {
   window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
@@ -261,14 +265,6 @@ document.addEventListener("keydown", e => {
     closeTrailer();
   }
 });
-
-/* INIT */
-loadHero();
-loadContinue();
-loadCategory("Trending Now", "movie");
-loadCategory("Action", "action");
-loadCategory("Comedy", "comedy");
-loadCategory("Sci-Fi", "sci-fi");
 
 async function savePlaylist() {
 
@@ -459,19 +455,28 @@ function handlePlayClick(id) {
 function refreshPlayButtons() {
 
   document.querySelectorAll(".playBtn").forEach(btn => {
-
-    if (isLoggedIn()) {
-      btn.textContent = "▶ Play";
-      document.querySelector('#cw').style.display = 'block';
-      document.querySelector('.myListBtn').style.display = 'block';
-    } else {
-      btn.textContent = "Login to Play";
-      document.querySelector('#cw').style.display = 'none';
-      document.querySelector('.myListBtn').style.display = 'none';
-    }
-
+    btn.textContent = isLoggedIn() ? "▶ Play" : "Login to Play";
   });
 
+  if (isLoggedIn()) {
+    if (cw) cw.style.display = 'block';
+    if (myListBtn) myListBtn.style.display = 'block';
+  } else {
+    if (cw) cw.style.display = 'none';
+    if (myListBtn) myListBtn.style.display = 'none';
+  }
 }
-applyPlayLockState();
-refreshPlayButtons();
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  await loadHero();
+  loadContinue();
+  await loadCategory("Trending Now", "movie");
+  await loadCategory("Action", "action");
+  await loadCategory("Comedy", "comedy");
+  await loadCategory("Sci-Fi", "sci-fi");
+
+  applyPlayLockState();
+  refreshPlayButtons();
+
+});
