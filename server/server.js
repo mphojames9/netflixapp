@@ -69,7 +69,6 @@ app.delete("/api/playlists/:playlistId/:imdbID", async (req, res) => {
   }
 });
 
-const path = require("path");
 
 /* Serve frontend */
 app.use(express.static(path.join(__dirname, "../src")));
