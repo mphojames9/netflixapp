@@ -138,7 +138,8 @@ function updateHeaderUI(){
 
 const token = localStorage.getItem("token");
 const user = JSON.parse(localStorage.getItem("user"));
-
+applyPlayLockState();
+refreshPlayButtons();
 if(token && user){
 
   userArea.innerHTML = `

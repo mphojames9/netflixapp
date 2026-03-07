@@ -239,15 +239,17 @@ function stopTrailer(card) {
   player.style.display = "none";
 }
 
-/* CONTINUE WATCHING */
 function loadContinue() {
-  let m = JSON.parse(localStorage.getItem("lastMovie"));
-  if (!m) return;
+  let list = JSON.parse(localStorage.getItem("continueWatching")) || [];
+  if (!list.length) return;
+
   content.innerHTML += `
-<div class="section" id='cw'>
-<h2>Continue Watching</h2>
-<div class="sliderTrack">${cardHTML(m)}</div>
-</div>`;
+  <div class="section" id="cw">
+    <h2>Continue Watching</h2>
+    <div class="sliderTrack">
+      ${list.map(m => cardHTML(m)).join("")}
+    </div>
+  </div>`;
 }
 
   const cw = document.querySelector('#cw');
