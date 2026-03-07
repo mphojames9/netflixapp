@@ -425,30 +425,32 @@ function showToast(title, message) {
   }, 3000);
 }
 
-function handlePlayClick(id) {
+async function handlePlayClick(id) {
 
   if (!isLoggedIn()) {
     showToast("Login Required", "Please login to play this movie 🎬");
     return;
   }
 
-  // Get existing continue list
+  // get movie info
+  let res = await fetch(API + "i=" + id);
+  let movie = await res.json();
+
   let continueList = JSON.parse(localStorage.getItem("continueWatching")) || [];
 
-  // Remove if already exists (avoid duplicates)
+  // remove duplicates
   continueList = continueList.filter(m => m.imdbID !== id);
 
-  // Add current movie to beginning
+  // add new movie
   continueList.unshift({
-    imdbID: currentMovieId,
-    title: currentMovieTitle,
-    poster: currentMoviePoster
+    imdbID: movie.imdbID,
+    title: movie.Title,
+    poster: movie.Poster
   });
 
-  // Keep only last 3
+  // keep only 3
   continueList = continueList.slice(0, 3);
 
-  // Save back
   localStorage.setItem("continueWatching", JSON.stringify(continueList));
 
   openMovie(id);
