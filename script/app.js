@@ -92,7 +92,7 @@ onmouseleave="stopTrailer(this)">
 <div class="hoverPlayer"></div>
 <div class="expandInfo">
 <button class="playBtn"
-onclick="event.stopPropagation();handlePlayClick('${m.imdbID}')">
+onclick="event.stopPropagation();handlePlayClick('${m.imdbID}','${m.Title}','${m.Poster}')">
 ${isLoggedIn() ? "▶ Play" : "Login to Play"}
 </button>
 <div class="meta">${m.Title}</div>
@@ -425,30 +425,27 @@ function showToast(title, message) {
   }, 3000);
 }
 
-async function handlePlayClick(id) {
+function handlePlayClick(id, title, poster) {
 
   if (!isLoggedIn()) {
     showToast("Login Required", "Please login to play this movie 🎬");
     return;
   }
 
-  // get movie info
-  let res = await fetch(API + "i=" + id);
-  let movie = await res.json();
+  let continueList =
+    JSON.parse(localStorage.getItem("continueWatching")) || [];
 
-  let continueList = JSON.parse(localStorage.getItem("continueWatching")) || [];
-
-  // remove duplicates
+  // remove duplicate
   continueList = continueList.filter(m => m.imdbID !== id);
 
-  // add new movie
+  // add movie
   continueList.unshift({
-    imdbID: movie.imdbID,
-    title: movie.Title,
-    poster: movie.Poster
+    imdbID: id,
+    title: title,
+    poster: poster
   });
 
-  // keep only 3
+  // keep only last 3
   continueList = continueList.slice(0, 3);
 
   localStorage.setItem("continueWatching", JSON.stringify(continueList));
