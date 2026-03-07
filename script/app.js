@@ -240,14 +240,21 @@ function stopTrailer(card) {
 }
 
 function loadContinue() {
+
   let list = JSON.parse(localStorage.getItem("continueWatching")) || [];
   if (!list.length) return;
+
+  const movies = list.map(m => ({
+    imdbID: m.imdbID,
+    Title: m.title,
+    Poster: m.poster
+  }));
 
   content.innerHTML += `
   <div class="section" id="cw">
     <h2>Continue Watching</h2>
     <div class="sliderTrack">
-      ${list.map(m => cardHTML(m)).join("")}
+      ${movies.map(cardHTML).join("")}
     </div>
   </div>`;
 }
